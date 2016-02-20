@@ -1,4 +1,4 @@
-# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests #
+# WUDS: Wi-Fi User Detection - Modified #
 
 ** THIS WILL CHANGE ALOT WORKING UP TO MARCH 12/13th !
 
