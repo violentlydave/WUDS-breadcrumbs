@@ -1,5 +1,5 @@
 diff -uarN WUDS_original/wuds/config.py code/config.py
---- WUDS_original/wuds/config.py	2016-02-20 10:42:21.998039970 -0500
+--- WUDS_original/wuds/config.py	2016-02-20 10:45:22.294036741 -0500
 +++ code/config.py	2016-02-20 10:08:41.254076157 -0500
 @@ -3,8 +3,9 @@
  # CONTROL
@@ -58,7 +58,7 @@ diff -uarN WUDS_original/wuds/config.py code/config.py
 +#PUSHOVER_API_KEY = ''
 +#PUSHOVER_USER_KEY = ''
 diff -uarN WUDS_original/wuds/core.py code/core.py
---- WUDS_original/wuds/core.py	2016-02-20 10:42:21.998039970 -0500
+--- WUDS_original/wuds/core.py	2016-02-20 10:45:22.294036741 -0500
 +++ code/core.py	2016-02-20 09:12:20.898136693 -0500
 @@ -155,6 +155,7 @@
              except KeyboardInterrupt:
@@ -632,9 +632,9 @@ diff -uarN WUDS_original/wuds/.git/info/exclude code/.git/info/exclude
 +# *.[oa]
 +# *~
 diff -uarN WUDS_original/wuds/README code/README
---- WUDS_original/wuds/README	2016-02-20 10:42:21.998039970 -0500
-+++ code/README	2016-02-20 10:07:57.318076944 -0500
-@@ -1,32 +1,64 @@
+--- WUDS_original/wuds/README	2016-02-20 10:45:22.294036741 -0500
++++ code/README	1969-12-31 19:00:00.000000000 -0500
+@@ -1,32 +0,0 @@
 -# WUDS: Wi-Fi User Detection System
 -
 -WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
@@ -668,8 +668,11 @@ diff -uarN WUDS_original/wuds/README code/README
 -* run.sh - startup script
 -* README - this file
 \ No newline at end of file
-+#
-+# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests
+diff -uarN WUDS_original/wuds/README.md code/README.md
+--- WUDS_original/wuds/README.md	1969-12-31 19:00:00.000000000 -0500
++++ code/README.md	2016-02-20 10:44:43.182037441 -0500
+@@ -0,0 +1,63 @@
++# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests #
 +
 +** THIS WILL CHANGE ALOT WORKING UP TO MARCH 12/13th !
 +
@@ -733,7 +736,7 @@ diff -uarN WUDS_original/wuds/README code/README
 +* run.sh - startup script
 +* README - this file
 diff -uarN WUDS_original/wuds/run.sh code/run.sh
---- WUDS_original/wuds/run.sh	2016-02-20 10:42:21.998039970 -0500
+--- WUDS_original/wuds/run.sh	2016-02-20 10:45:22.294036741 -0500
 +++ code/run.sh	2016-02-20 10:03:55.706081271 -0500
 @@ -1,6 +1,15 @@
 -iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
@@ -758,10 +761,10 @@ diff -uarN WUDS_original/wuds/run.sh code/run.sh
 +sudo iw dev $IFACE del
 diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 --- WUDS_original/wuds/wudstobreadcrumbs.diff	1969-12-31 19:00:00.000000000 -0500
-+++ code/wudstobreadcrumbs.diff	2016-02-20 10:41:57.170040414 -0500
-@@ -0,0 +1,278 @@
++++ code/wudstobreadcrumbs.diff	2016-02-20 10:45:09.082036978 -0500
+@@ -0,0 +1,1805 @@
 +diff -uarN WUDS_original/wuds/config.py code/config.py
-+--- WUDS_original/wuds/config.py	2016-02-20 10:41:57.162040414 -0500
++--- WUDS_original/wuds/config.py	2016-02-20 10:45:09.074036978 -0500
 ++++ code/config.py	2016-02-20 10:08:41.254076157 -0500
 +@@ -3,8 +3,9 @@
 + # CONTROL
@@ -820,7 +823,7 @@ diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 ++#PUSHOVER_API_KEY = ''
 ++#PUSHOVER_USER_KEY = ''
 +diff -uarN WUDS_original/wuds/core.py code/core.py
-+--- WUDS_original/wuds/core.py	2016-02-20 10:41:57.162040414 -0500
++--- WUDS_original/wuds/core.py	2016-02-20 10:45:09.074036978 -0500
 ++++ code/core.py	2016-02-20 09:12:20.898136693 -0500
 +@@ -155,6 +155,7 @@
 +             except KeyboardInterrupt:
@@ -831,10 +834,572 @@ diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 ++		if DEBUG: print traceback.format_exec()
 +                 continue
 +         log_message(0, 'WUDS stopped.')
++diff -uarN WUDS_original/wuds/.git/config code/.git/config
++--- WUDS_original/wuds/.git/config	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/config	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,5 @@
+++[core]
+++	repositoryformatversion = 0
+++	filemode = true
+++	bare = false
+++	logallrefupdates = true
++diff -uarN WUDS_original/wuds/.git/description code/.git/description
++--- WUDS_original/wuds/.git/description	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/description	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1 @@
+++Unnamed repository; edit this file 'description' to name the repository.
++diff -uarN WUDS_original/wuds/.git/HEAD code/.git/HEAD
++--- WUDS_original/wuds/.git/HEAD	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/HEAD	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1 @@
+++ref: refs/heads/master
++diff -uarN WUDS_original/wuds/.git/hooks/applypatch-msg.sample code/.git/hooks/applypatch-msg.sample
++--- WUDS_original/wuds/.git/hooks/applypatch-msg.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/applypatch-msg.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,15 @@
+++#!/bin/sh
+++#
+++# An example hook script to check the commit log message taken by
+++# applypatch from an e-mail message.
+++#
+++# The hook should exit with non-zero status after issuing an
+++# appropriate message if it wants to stop the commit.  The hook is
+++# allowed to edit the commit message file.
+++#
+++# To enable this hook, rename this file to "applypatch-msg".
+++
+++. git-sh-setup
+++test -x "$GIT_DIR/hooks/commit-msg" &&
+++	exec "$GIT_DIR/hooks/commit-msg" ${1+"$@"}
+++:
++diff -uarN WUDS_original/wuds/.git/hooks/commit-msg.sample code/.git/hooks/commit-msg.sample
++--- WUDS_original/wuds/.git/hooks/commit-msg.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/commit-msg.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,24 @@
+++#!/bin/sh
+++#
+++# An example hook script to check the commit log message.
+++# Called by "git commit" with one argument, the name of the file
+++# that has the commit message.  The hook should exit with non-zero
+++# status after issuing an appropriate message if it wants to stop the
+++# commit.  The hook is allowed to edit the commit message file.
+++#
+++# To enable this hook, rename this file to "commit-msg".
+++
+++# Uncomment the below to add a Signed-off-by line to the message.
+++# Doing this in a hook is a bad idea in general, but the prepare-commit-msg
+++# hook is more suited to it.
+++#
+++# SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
+++# grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
+++
+++# This example catches duplicate Signed-off-by lines.
+++
+++test "" = "$(grep '^Signed-off-by: ' "$1" |
+++	 sort | uniq -c | sed -e '/^[ 	]*1[ 	]/d')" || {
+++	echo >&2 Duplicate Signed-off-by lines.
+++	exit 1
+++}
++diff -uarN WUDS_original/wuds/.git/hooks/post-update.sample code/.git/hooks/post-update.sample
++--- WUDS_original/wuds/.git/hooks/post-update.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/post-update.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,8 @@
+++#!/bin/sh
+++#
+++# An example hook script to prepare a packed repository for use over
+++# dumb transports.
+++#
+++# To enable this hook, rename this file to "post-update".
+++
+++exec git update-server-info
++diff -uarN WUDS_original/wuds/.git/hooks/pre-applypatch.sample code/.git/hooks/pre-applypatch.sample
++--- WUDS_original/wuds/.git/hooks/pre-applypatch.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/pre-applypatch.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,14 @@
+++#!/bin/sh
+++#
+++# An example hook script to verify what is about to be committed
+++# by applypatch from an e-mail message.
+++#
+++# The hook should exit with non-zero status after issuing an
+++# appropriate message if it wants to stop the commit.
+++#
+++# To enable this hook, rename this file to "pre-applypatch".
+++
+++. git-sh-setup
+++test -x "$GIT_DIR/hooks/pre-commit" &&
+++	exec "$GIT_DIR/hooks/pre-commit" ${1+"$@"}
+++:
++diff -uarN WUDS_original/wuds/.git/hooks/pre-commit.sample code/.git/hooks/pre-commit.sample
++--- WUDS_original/wuds/.git/hooks/pre-commit.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/pre-commit.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,49 @@
+++#!/bin/sh
+++#
+++# An example hook script to verify what is about to be committed.
+++# Called by "git commit" with no arguments.  The hook should
+++# exit with non-zero status after issuing an appropriate message if
+++# it wants to stop the commit.
+++#
+++# To enable this hook, rename this file to "pre-commit".
+++
+++if git rev-parse --verify HEAD >/dev/null 2>&1
+++then
+++	against=HEAD
+++else
+++	# Initial commit: diff against an empty tree object
+++	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+++fi
+++
+++# If you want to allow non-ASCII filenames set this variable to true.
+++allownonascii=$(git config --bool hooks.allownonascii)
+++
+++# Redirect output to stderr.
+++exec 1>&2
+++
+++# Cross platform projects tend to avoid non-ASCII filenames; prevent
+++# them from being added to the repository. We exploit the fact that the
+++# printable range starts at the space character and ends with tilde.
+++if [ "$allownonascii" != "true" ] &&
+++	# Note that the use of brackets around a tr range is ok here, (it's
+++	# even required, for portability to Solaris 10's /usr/bin/tr), since
+++	# the square bracket bytes happen to fall in the designated range.
+++	test $(git diff --cached --name-only --diff-filter=A -z $against |
+++	  LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
+++then
+++	cat <<\EOF
+++Error: Attempt to add a non-ASCII file name.
+++
+++This can cause problems if you want to work with people on other platforms.
+++
+++To be portable it is advisable to rename the file.
+++
+++If you know what you are doing you can disable this check using:
+++
+++  git config hooks.allownonascii true
+++EOF
+++	exit 1
+++fi
+++
+++# If there are whitespace errors, print the offending file names and fail.
+++exec git diff-index --check --cached $against --
++diff -uarN WUDS_original/wuds/.git/hooks/prepare-commit-msg.sample code/.git/hooks/prepare-commit-msg.sample
++--- WUDS_original/wuds/.git/hooks/prepare-commit-msg.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/prepare-commit-msg.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,36 @@
+++#!/bin/sh
+++#
+++# An example hook script to prepare the commit log message.
+++# Called by "git commit" with the name of the file that has the
+++# commit message, followed by the description of the commit
+++# message's source.  The hook's purpose is to edit the commit
+++# message file.  If the hook fails with a non-zero status,
+++# the commit is aborted.
+++#
+++# To enable this hook, rename this file to "prepare-commit-msg".
+++
+++# This hook includes three examples.  The first comments out the
+++# "Conflicts:" part of a merge commit.
+++#
+++# The second includes the output of "git diff --name-status -r"
+++# into the message, just before the "git status" output.  It is
+++# commented because it doesn't cope with --amend or with squashed
+++# commits.
+++#
+++# The third example adds a Signed-off-by line to the message, that can
+++# still be edited.  This is rarely a good idea.
+++
+++case "$2,$3" in
+++  merge,)
+++    /usr/bin/perl -i.bak -ne 's/^/# /, s/^# #/#/ if /^Conflicts/ .. /#/; print' "$1" ;;
+++
+++# ,|template,)
+++#   /usr/bin/perl -i.bak -pe '
+++#      print "\n" . `git diff --cached --name-status -r`
+++#	 if /^#/ && $first++ == 0' "$1" ;;
+++
+++  *) ;;
+++esac
+++
+++# SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
+++# grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
++diff -uarN WUDS_original/wuds/.git/hooks/pre-push.sample code/.git/hooks/pre-push.sample
++--- WUDS_original/wuds/.git/hooks/pre-push.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/pre-push.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,54 @@
+++#!/bin/sh
+++
+++# An example hook script to verify what is about to be pushed.  Called by "git
+++# push" after it has checked the remote status, but before anything has been
+++# pushed.  If this script exits with a non-zero status nothing will be pushed.
+++#
+++# This hook is called with the following parameters:
+++#
+++# $1 -- Name of the remote to which the push is being done
+++# $2 -- URL to which the push is being done
+++#
+++# If pushing without using a named remote those arguments will be equal.
+++#
+++# Information about the commits which are being pushed is supplied as lines to
+++# the standard input in the form:
+++#
+++#   <local ref> <local sha1> <remote ref> <remote sha1>
+++#
+++# This sample shows how to prevent push of commits where the log message starts
+++# with "WIP" (work in progress).
+++
+++remote="$1"
+++url="$2"
+++
+++z40=0000000000000000000000000000000000000000
+++
+++IFS=' '
+++while read local_ref local_sha remote_ref remote_sha
+++do
+++	if [ "$local_sha" = $z40 ]
+++	then
+++		# Handle delete
+++		:
+++	else
+++		if [ "$remote_sha" = $z40 ]
+++		then
+++			# New branch, examine all commits
+++			range="$local_sha"
+++		else
+++			# Update to existing branch, examine new commits
+++			range="$remote_sha..$local_sha"
+++		fi
+++
+++		# Check for WIP commit
+++		commit=`git rev-list -n 1 --grep '^WIP' "$range"`
+++		if [ -n "$commit" ]
+++		then
+++			echo "Found WIP commit in $local_ref, not pushing"
+++			exit 1
+++		fi
+++	fi
+++done
+++
+++exit 0
++diff -uarN WUDS_original/wuds/.git/hooks/pre-rebase.sample code/.git/hooks/pre-rebase.sample
++--- WUDS_original/wuds/.git/hooks/pre-rebase.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/pre-rebase.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,169 @@
+++#!/bin/sh
+++#
+++# Copyright (c) 2006, 2008 Junio C Hamano
+++#
+++# The "pre-rebase" hook is run just before "git rebase" starts doing
+++# its job, and can prevent the command from running by exiting with
+++# non-zero status.
+++#
+++# The hook is called with the following parameters:
+++#
+++# $1 -- the upstream the series was forked from.
+++# $2 -- the branch being rebased (or empty when rebasing the current branch).
+++#
+++# This sample shows how to prevent topic branches that are already
+++# merged to 'next' branch from getting rebased, because allowing it
+++# would result in rebasing already published history.
+++
+++publish=next
+++basebranch="$1"
+++if test "$#" = 2
+++then
+++	topic="refs/heads/$2"
+++else
+++	topic=`git symbolic-ref HEAD` ||
+++	exit 0 ;# we do not interrupt rebasing detached HEAD
+++fi
+++
+++case "$topic" in
+++refs/heads/??/*)
+++	;;
+++*)
+++	exit 0 ;# we do not interrupt others.
+++	;;
+++esac
+++
+++# Now we are dealing with a topic branch being rebased
+++# on top of master.  Is it OK to rebase it?
+++
+++# Does the topic really exist?
+++git show-ref -q "$topic" || {
+++	echo >&2 "No such branch $topic"
+++	exit 1
+++}
+++
+++# Is topic fully merged to master?
+++not_in_master=`git rev-list --pretty=oneline ^master "$topic"`
+++if test -z "$not_in_master"
+++then
+++	echo >&2 "$topic is fully merged to master; better remove it."
+++	exit 1 ;# we could allow it, but there is no point.
+++fi
+++
+++# Is topic ever merged to next?  If so you should not be rebasing it.
+++only_next_1=`git rev-list ^master "^$topic" ${publish} | sort`
+++only_next_2=`git rev-list ^master           ${publish} | sort`
+++if test "$only_next_1" = "$only_next_2"
+++then
+++	not_in_topic=`git rev-list "^$topic" master`
+++	if test -z "$not_in_topic"
+++	then
+++		echo >&2 "$topic is already up-to-date with master"
+++		exit 1 ;# we could allow it, but there is no point.
+++	else
+++		exit 0
+++	fi
+++else
+++	not_in_next=`git rev-list --pretty=oneline ^${publish} "$topic"`
+++	/usr/bin/perl -e '
+++		my $topic = $ARGV[0];
+++		my $msg = "* $topic has commits already merged to public branch:\n";
+++		my (%not_in_next) = map {
+++			/^([0-9a-f]+) /;
+++			($1 => 1);
+++		} split(/\n/, $ARGV[1]);
+++		for my $elem (map {
+++				/^([0-9a-f]+) (.*)$/;
+++				[$1 => $2];
+++			} split(/\n/, $ARGV[2])) {
+++			if (!exists $not_in_next{$elem->[0]}) {
+++				if ($msg) {
+++					print STDERR $msg;
+++					undef $msg;
+++				}
+++				print STDERR " $elem->[1]\n";
+++			}
+++		}
+++	' "$topic" "$not_in_next" "$not_in_master"
+++	exit 1
+++fi
+++
+++<<\DOC_END
+++
+++This sample hook safeguards topic branches that have been
+++published from being rewound.
+++
+++The workflow assumed here is:
+++
+++ * Once a topic branch forks from "master", "master" is never
+++   merged into it again (either directly or indirectly).
+++
+++ * Once a topic branch is fully cooked and merged into "master",
+++   it is deleted.  If you need to build on top of it to correct
+++   earlier mistakes, a new topic branch is created by forking at
+++   the tip of the "master".  This is not strictly necessary, but
+++   it makes it easier to keep your history simple.
+++
+++ * Whenever you need to test or publish your changes to topic
+++   branches, merge them into "next" branch.
+++
+++The script, being an example, hardcodes the publish branch name
+++to be "next", but it is trivial to make it configurable via
+++$GIT_DIR/config mechanism.
+++
+++With this workflow, you would want to know:
+++
+++(1) ... if a topic branch has ever been merged to "next".  Young
+++    topic branches can have stupid mistakes you would rather
+++    clean up before publishing, and things that have not been
+++    merged into other branches can be easily rebased without
+++    affecting other people.  But once it is published, you would
+++    not want to rewind it.
+++
+++(2) ... if a topic branch has been fully merged to "master".
+++    Then you can delete it.  More importantly, you should not
+++    build on top of it -- other people may already want to
+++    change things related to the topic as patches against your
+++    "master", so if you need further changes, it is better to
+++    fork the topic (perhaps with the same name) afresh from the
+++    tip of "master".
+++
+++Let's look at this example:
+++
+++		   o---o---o---o---o---o---o---o---o---o "next"
+++		  /       /           /           /
+++		 /   a---a---b A     /           /
+++		/   /               /           /
+++	       /   /   c---c---c---c B         /
+++	      /   /   /             \         /
+++	     /   /   /   b---b C     \       /
+++	    /   /   /   /             \     /
+++    ---o---o---o---o---o---o---o---o---o---o---o "master"
+++
+++
+++A, B and C are topic branches.
+++
+++ * A has one fix since it was merged up to "next".
+++
+++ * B has finished.  It has been fully merged up to "master" and "next",
+++   and is ready to be deleted.
+++
+++ * C has not merged to "next" at all.
+++
+++We would want to allow C to be rebased, refuse A, and encourage
+++B to be deleted.
+++
+++To compute (1):
+++
+++	git rev-list ^master ^topic next
+++	git rev-list ^master        next
+++
+++	if these match, topic has not merged in next at all.
+++
+++To compute (2):
+++
+++	git rev-list master..topic
+++
+++	if this is empty, it is fully merged to "master".
+++
+++DOC_END
++diff -uarN WUDS_original/wuds/.git/hooks/update.sample code/.git/hooks/update.sample
++--- WUDS_original/wuds/.git/hooks/update.sample	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/hooks/update.sample	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,128 @@
+++#!/bin/sh
+++#
+++# An example hook script to blocks unannotated tags from entering.
+++# Called by "git receive-pack" with arguments: refname sha1-old sha1-new
+++#
+++# To enable this hook, rename this file to "update".
+++#
+++# Config
+++# ------
+++# hooks.allowunannotated
+++#   This boolean sets whether unannotated tags will be allowed into the
+++#   repository.  By default they won't be.
+++# hooks.allowdeletetag
+++#   This boolean sets whether deleting tags will be allowed in the
+++#   repository.  By default they won't be.
+++# hooks.allowmodifytag
+++#   This boolean sets whether a tag may be modified after creation. By default
+++#   it won't be.
+++# hooks.allowdeletebranch
+++#   This boolean sets whether deleting branches will be allowed in the
+++#   repository.  By default they won't be.
+++# hooks.denycreatebranch
+++#   This boolean sets whether remotely creating branches will be denied
+++#   in the repository.  By default this is allowed.
+++#
+++
+++# --- Command line
+++refname="$1"
+++oldrev="$2"
+++newrev="$3"
+++
+++# --- Safety check
+++if [ -z "$GIT_DIR" ]; then
+++	echo "Don't run this script from the command line." >&2
+++	echo " (if you want, you could supply GIT_DIR then run" >&2
+++	echo "  $0 <ref> <oldrev> <newrev>)" >&2
+++	exit 1
+++fi
+++
+++if [ -z "$refname" -o -z "$oldrev" -o -z "$newrev" ]; then
+++	echo "usage: $0 <ref> <oldrev> <newrev>" >&2
+++	exit 1
+++fi
+++
+++# --- Config
+++allowunannotated=$(git config --bool hooks.allowunannotated)
+++allowdeletebranch=$(git config --bool hooks.allowdeletebranch)
+++denycreatebranch=$(git config --bool hooks.denycreatebranch)
+++allowdeletetag=$(git config --bool hooks.allowdeletetag)
+++allowmodifytag=$(git config --bool hooks.allowmodifytag)
+++
+++# check for no description
+++projectdesc=$(sed -e '1q' "$GIT_DIR/description")
+++case "$projectdesc" in
+++"Unnamed repository"* | "")
+++	echo "*** Project description file hasn't been set" >&2
+++	exit 1
+++	;;
+++esac
+++
+++# --- Check types
+++# if $newrev is 0000...0000, it's a commit to delete a ref.
+++zero="0000000000000000000000000000000000000000"
+++if [ "$newrev" = "$zero" ]; then
+++	newrev_type=delete
+++else
+++	newrev_type=$(git cat-file -t $newrev)
+++fi
+++
+++case "$refname","$newrev_type" in
+++	refs/tags/*,commit)
+++		# un-annotated tag
+++		short_refname=${refname##refs/tags/}
+++		if [ "$allowunannotated" != "true" ]; then
+++			echo "*** The un-annotated tag, $short_refname, is not allowed in this repository" >&2
+++			echo "*** Use 'git tag [ -a | -s ]' for tags you want to propagate." >&2
+++			exit 1
+++		fi
+++		;;
+++	refs/tags/*,delete)
+++		# delete tag
+++		if [ "$allowdeletetag" != "true" ]; then
+++			echo "*** Deleting a tag is not allowed in this repository" >&2
+++			exit 1
+++		fi
+++		;;
+++	refs/tags/*,tag)
+++		# annotated tag
+++		if [ "$allowmodifytag" != "true" ] && git rev-parse $refname > /dev/null 2>&1
+++		then
+++			echo "*** Tag '$refname' already exists." >&2
+++			echo "*** Modifying a tag is not allowed in this repository." >&2
+++			exit 1
+++		fi
+++		;;
+++	refs/heads/*,commit)
+++		# branch
+++		if [ "$oldrev" = "$zero" -a "$denycreatebranch" = "true" ]; then
+++			echo "*** Creating a branch is not allowed in this repository" >&2
+++			exit 1
+++		fi
+++		;;
+++	refs/heads/*,delete)
+++		# delete branch
+++		if [ "$allowdeletebranch" != "true" ]; then
+++			echo "*** Deleting a branch is not allowed in this repository" >&2
+++			exit 1
+++		fi
+++		;;
+++	refs/remotes/*,commit)
+++		# tracking branch
+++		;;
+++	refs/remotes/*,delete)
+++		# delete tracking branch
+++		if [ "$allowdeletebranch" != "true" ]; then
+++			echo "*** Deleting a tracking branch is not allowed in this repository" >&2
+++			exit 1
+++		fi
+++		;;
+++	*)
+++		# Anything else (is there anything else?)
+++		echo "*** Update hook: unknown type of update to ref $refname of type $newrev_type" >&2
+++		exit 1
+++		;;
+++esac
+++
+++# --- Finished
+++exit 0
++diff -uarN WUDS_original/wuds/.git/info/exclude code/.git/info/exclude
++--- WUDS_original/wuds/.git/info/exclude	1969-12-31 19:00:00.000000000 -0500
+++++ code/.git/info/exclude	2016-02-20 10:42:12.994040131 -0500
++@@ -0,0 +1,6 @@
+++# git ls-files --others --exclude-from=.git/info/exclude
+++# Lines that start with '#' are comments.
+++# For a project mostly in C, the following would be a good set of
+++# exclude patterns (uncomment them if you want to use them):
+++# *.[oa]
+++# *~
 +diff -uarN WUDS_original/wuds/README code/README
-+--- WUDS_original/wuds/README	2016-02-20 10:41:57.162040414 -0500
-++++ code/README	2016-02-20 10:07:57.318076944 -0500
-+@@ -1,32 +1,64 @@
++--- WUDS_original/wuds/README	2016-02-20 10:45:09.074036978 -0500
+++++ code/README	1969-12-31 19:00:00.000000000 -0500
++@@ -1,32 +0,0 @@
 +-# WUDS: Wi-Fi User Detection System
 +-
 +-WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
@@ -868,8 +1433,11 @@ diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 +-* run.sh - startup script
 +-* README - this file
 +\ No newline at end of file
-++#
-++# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests
++diff -uarN WUDS_original/wuds/README.md code/README.md
++--- WUDS_original/wuds/README.md	1969-12-31 19:00:00.000000000 -0500
+++++ code/README.md	2016-02-20 10:44:43.182037441 -0500
++@@ -0,0 +1,63 @@
+++# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests #
 ++
 ++** THIS WILL CHANGE ALOT WORKING UP TO MARCH 12/13th !
 ++
@@ -933,7 +1501,7 @@ diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 ++* run.sh - startup script
 ++* README - this file
 +diff -uarN WUDS_original/wuds/run.sh code/run.sh
-+--- WUDS_original/wuds/run.sh	2016-02-20 10:41:57.162040414 -0500
++--- WUDS_original/wuds/run.sh	2016-02-20 10:45:09.074036978 -0500
 ++++ code/run.sh	2016-02-20 10:03:55.706081271 -0500
 +@@ -1,6 +1,15 @@
 +-iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
@@ -958,21 +1526,24 @@ diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 ++sudo iw dev $IFACE del
 +diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 +--- WUDS_original/wuds/wudstobreadcrumbs.diff	1969-12-31 19:00:00.000000000 -0500
-++++ code/wudstobreadcrumbs.diff	2016-02-20 09:31:09.394116484 -0500
-+@@ -0,0 +1,78 @@
+++++ code/wudstobreadcrumbs.diff	2016-02-20 10:42:22.006039970 -0500
++@@ -0,0 +1,1040 @@
 ++diff -uarN WUDS_original/wuds/config.py code/config.py
-++--- WUDS_original/wuds/config.py	2016-02-20 09:31:09.386116484 -0500
-+++++ code/config.py	2016-02-20 09:12:20.898136693 -0500
-++@@ -4,7 +4,7 @@
+++--- WUDS_original/wuds/config.py	2016-02-20 10:42:21.998039970 -0500
++++++ code/config.py	2016-02-20 10:08:41.254076157 -0500
+++@@ -3,8 +3,9 @@
+++ # CONTROL
 ++ #=========
 ++ 
-++ # (STR) WLAN interface in monitor mode
+++-# (STR) WLAN interface in monitor mode
 ++-IFACE = 'mon0'
-+++IFACE = 'mon1'
++++# (STR) WLAN interface to use - run.sh puts into monitor mode.
++++#       If this is blank, run.sh will use first wlan interface.
++++IFACE = 'wlan1'
 ++ 
 ++ # (LIST) List of MAC addresses expected within the premises
 ++ MAC_LIST = [
-++@@ -40,34 +40,34 @@
+++@@ -40,34 +41,34 @@
 ++ LOG_LEVEL = 3
 ++ 
 ++ # (BOOL) Enable/Disable stdout debugging messages
@@ -1017,7 +1588,7 @@ diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 +++#PUSHOVER_API_KEY = ''
 +++#PUSHOVER_USER_KEY = ''
 ++diff -uarN WUDS_original/wuds/core.py code/core.py
-++--- WUDS_original/wuds/core.py	2016-02-20 09:31:09.386116484 -0500
+++--- WUDS_original/wuds/core.py	2016-02-20 10:42:21.998039970 -0500
 +++++ code/core.py	2016-02-20 09:12:20.898136693 -0500
 ++@@ -155,6 +155,7 @@
 ++             except KeyboardInterrupt:
@@ -1028,13 +1599,972 @@ diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
 +++		if DEBUG: print traceback.format_exec()
 ++                 continue
 ++         log_message(0, 'WUDS stopped.')
+++diff -uarN WUDS_original/wuds/.git/config code/.git/config
+++--- WUDS_original/wuds/.git/config	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/config	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,5 @@
++++[core]
++++	repositoryformatversion = 0
++++	filemode = true
++++	bare = false
++++	logallrefupdates = true
+++diff -uarN WUDS_original/wuds/.git/description code/.git/description
+++--- WUDS_original/wuds/.git/description	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/description	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1 @@
++++Unnamed repository; edit this file 'description' to name the repository.
+++diff -uarN WUDS_original/wuds/.git/HEAD code/.git/HEAD
+++--- WUDS_original/wuds/.git/HEAD	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/HEAD	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1 @@
++++ref: refs/heads/master
+++diff -uarN WUDS_original/wuds/.git/hooks/applypatch-msg.sample code/.git/hooks/applypatch-msg.sample
+++--- WUDS_original/wuds/.git/hooks/applypatch-msg.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/applypatch-msg.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,15 @@
++++#!/bin/sh
++++#
++++# An example hook script to check the commit log message taken by
++++# applypatch from an e-mail message.
++++#
++++# The hook should exit with non-zero status after issuing an
++++# appropriate message if it wants to stop the commit.  The hook is
++++# allowed to edit the commit message file.
++++#
++++# To enable this hook, rename this file to "applypatch-msg".
++++
++++. git-sh-setup
++++test -x "$GIT_DIR/hooks/commit-msg" &&
++++	exec "$GIT_DIR/hooks/commit-msg" ${1+"$@"}
++++:
+++diff -uarN WUDS_original/wuds/.git/hooks/commit-msg.sample code/.git/hooks/commit-msg.sample
+++--- WUDS_original/wuds/.git/hooks/commit-msg.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/commit-msg.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,24 @@
++++#!/bin/sh
++++#
++++# An example hook script to check the commit log message.
++++# Called by "git commit" with one argument, the name of the file
++++# that has the commit message.  The hook should exit with non-zero
++++# status after issuing an appropriate message if it wants to stop the
++++# commit.  The hook is allowed to edit the commit message file.
++++#
++++# To enable this hook, rename this file to "commit-msg".
++++
++++# Uncomment the below to add a Signed-off-by line to the message.
++++# Doing this in a hook is a bad idea in general, but the prepare-commit-msg
++++# hook is more suited to it.
++++#
++++# SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
++++# grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
++++
++++# This example catches duplicate Signed-off-by lines.
++++
++++test "" = "$(grep '^Signed-off-by: ' "$1" |
++++	 sort | uniq -c | sed -e '/^[ 	]*1[ 	]/d')" || {
++++	echo >&2 Duplicate Signed-off-by lines.
++++	exit 1
++++}
+++diff -uarN WUDS_original/wuds/.git/hooks/post-update.sample code/.git/hooks/post-update.sample
+++--- WUDS_original/wuds/.git/hooks/post-update.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/post-update.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,8 @@
++++#!/bin/sh
++++#
++++# An example hook script to prepare a packed repository for use over
++++# dumb transports.
++++#
++++# To enable this hook, rename this file to "post-update".
++++
++++exec git update-server-info
+++diff -uarN WUDS_original/wuds/.git/hooks/pre-applypatch.sample code/.git/hooks/pre-applypatch.sample
+++--- WUDS_original/wuds/.git/hooks/pre-applypatch.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/pre-applypatch.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,14 @@
++++#!/bin/sh
++++#
++++# An example hook script to verify what is about to be committed
++++# by applypatch from an e-mail message.
++++#
++++# The hook should exit with non-zero status after issuing an
++++# appropriate message if it wants to stop the commit.
++++#
++++# To enable this hook, rename this file to "pre-applypatch".
++++
++++. git-sh-setup
++++test -x "$GIT_DIR/hooks/pre-commit" &&
++++	exec "$GIT_DIR/hooks/pre-commit" ${1+"$@"}
++++:
+++diff -uarN WUDS_original/wuds/.git/hooks/pre-commit.sample code/.git/hooks/pre-commit.sample
+++--- WUDS_original/wuds/.git/hooks/pre-commit.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/pre-commit.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,49 @@
++++#!/bin/sh
++++#
++++# An example hook script to verify what is about to be committed.
++++# Called by "git commit" with no arguments.  The hook should
++++# exit with non-zero status after issuing an appropriate message if
++++# it wants to stop the commit.
++++#
++++# To enable this hook, rename this file to "pre-commit".
++++
++++if git rev-parse --verify HEAD >/dev/null 2>&1
++++then
++++	against=HEAD
++++else
++++	# Initial commit: diff against an empty tree object
++++	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
++++fi
++++
++++# If you want to allow non-ASCII filenames set this variable to true.
++++allownonascii=$(git config --bool hooks.allownonascii)
++++
++++# Redirect output to stderr.
++++exec 1>&2
++++
++++# Cross platform projects tend to avoid non-ASCII filenames; prevent
++++# them from being added to the repository. We exploit the fact that the
++++# printable range starts at the space character and ends with tilde.
++++if [ "$allownonascii" != "true" ] &&
++++	# Note that the use of brackets around a tr range is ok here, (it's
++++	# even required, for portability to Solaris 10's /usr/bin/tr), since
++++	# the square bracket bytes happen to fall in the designated range.
++++	test $(git diff --cached --name-only --diff-filter=A -z $against |
++++	  LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
++++then
++++	cat <<\EOF
++++Error: Attempt to add a non-ASCII file name.
++++
++++This can cause problems if you want to work with people on other platforms.
++++
++++To be portable it is advisable to rename the file.
++++
++++If you know what you are doing you can disable this check using:
++++
++++  git config hooks.allownonascii true
++++EOF
++++	exit 1
++++fi
++++
++++# If there are whitespace errors, print the offending file names and fail.
++++exec git diff-index --check --cached $against --
+++diff -uarN WUDS_original/wuds/.git/hooks/prepare-commit-msg.sample code/.git/hooks/prepare-commit-msg.sample
+++--- WUDS_original/wuds/.git/hooks/prepare-commit-msg.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/prepare-commit-msg.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,36 @@
++++#!/bin/sh
++++#
++++# An example hook script to prepare the commit log message.
++++# Called by "git commit" with the name of the file that has the
++++# commit message, followed by the description of the commit
++++# message's source.  The hook's purpose is to edit the commit
++++# message file.  If the hook fails with a non-zero status,
++++# the commit is aborted.
++++#
++++# To enable this hook, rename this file to "prepare-commit-msg".
++++
++++# This hook includes three examples.  The first comments out the
++++# "Conflicts:" part of a merge commit.
++++#
++++# The second includes the output of "git diff --name-status -r"
++++# into the message, just before the "git status" output.  It is
++++# commented because it doesn't cope with --amend or with squashed
++++# commits.
++++#
++++# The third example adds a Signed-off-by line to the message, that can
++++# still be edited.  This is rarely a good idea.
++++
++++case "$2,$3" in
++++  merge,)
++++    /usr/bin/perl -i.bak -ne 's/^/# /, s/^# #/#/ if /^Conflicts/ .. /#/; print' "$1" ;;
++++
++++# ,|template,)
++++#   /usr/bin/perl -i.bak -pe '
++++#      print "\n" . `git diff --cached --name-status -r`
++++#	 if /^#/ && $first++ == 0' "$1" ;;
++++
++++  *) ;;
++++esac
++++
++++# SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
++++# grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
+++diff -uarN WUDS_original/wuds/.git/hooks/pre-push.sample code/.git/hooks/pre-push.sample
+++--- WUDS_original/wuds/.git/hooks/pre-push.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/pre-push.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,54 @@
++++#!/bin/sh
++++
++++# An example hook script to verify what is about to be pushed.  Called by "git
++++# push" after it has checked the remote status, but before anything has been
++++# pushed.  If this script exits with a non-zero status nothing will be pushed.
++++#
++++# This hook is called with the following parameters:
++++#
++++# $1 -- Name of the remote to which the push is being done
++++# $2 -- URL to which the push is being done
++++#
++++# If pushing without using a named remote those arguments will be equal.
++++#
++++# Information about the commits which are being pushed is supplied as lines to
++++# the standard input in the form:
++++#
++++#   <local ref> <local sha1> <remote ref> <remote sha1>
++++#
++++# This sample shows how to prevent push of commits where the log message starts
++++# with "WIP" (work in progress).
++++
++++remote="$1"
++++url="$2"
++++
++++z40=0000000000000000000000000000000000000000
++++
++++IFS=' '
++++while read local_ref local_sha remote_ref remote_sha
++++do
++++	if [ "$local_sha" = $z40 ]
++++	then
++++		# Handle delete
++++		:
++++	else
++++		if [ "$remote_sha" = $z40 ]
++++		then
++++			# New branch, examine all commits
++++			range="$local_sha"
++++		else
++++			# Update to existing branch, examine new commits
++++			range="$remote_sha..$local_sha"
++++		fi
++++
++++		# Check for WIP commit
++++		commit=`git rev-list -n 1 --grep '^WIP' "$range"`
++++		if [ -n "$commit" ]
++++		then
++++			echo "Found WIP commit in $local_ref, not pushing"
++++			exit 1
++++		fi
++++	fi
++++done
++++
++++exit 0
+++diff -uarN WUDS_original/wuds/.git/hooks/pre-rebase.sample code/.git/hooks/pre-rebase.sample
+++--- WUDS_original/wuds/.git/hooks/pre-rebase.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/pre-rebase.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,169 @@
++++#!/bin/sh
++++#
++++# Copyright (c) 2006, 2008 Junio C Hamano
++++#
++++# The "pre-rebase" hook is run just before "git rebase" starts doing
++++# its job, and can prevent the command from running by exiting with
++++# non-zero status.
++++#
++++# The hook is called with the following parameters:
++++#
++++# $1 -- the upstream the series was forked from.
++++# $2 -- the branch being rebased (or empty when rebasing the current branch).
++++#
++++# This sample shows how to prevent topic branches that are already
++++# merged to 'next' branch from getting rebased, because allowing it
++++# would result in rebasing already published history.
++++
++++publish=next
++++basebranch="$1"
++++if test "$#" = 2
++++then
++++	topic="refs/heads/$2"
++++else
++++	topic=`git symbolic-ref HEAD` ||
++++	exit 0 ;# we do not interrupt rebasing detached HEAD
++++fi
++++
++++case "$topic" in
++++refs/heads/??/*)
++++	;;
++++*)
++++	exit 0 ;# we do not interrupt others.
++++	;;
++++esac
++++
++++# Now we are dealing with a topic branch being rebased
++++# on top of master.  Is it OK to rebase it?
++++
++++# Does the topic really exist?
++++git show-ref -q "$topic" || {
++++	echo >&2 "No such branch $topic"
++++	exit 1
++++}
++++
++++# Is topic fully merged to master?
++++not_in_master=`git rev-list --pretty=oneline ^master "$topic"`
++++if test -z "$not_in_master"
++++then
++++	echo >&2 "$topic is fully merged to master; better remove it."
++++	exit 1 ;# we could allow it, but there is no point.
++++fi
++++
++++# Is topic ever merged to next?  If so you should not be rebasing it.
++++only_next_1=`git rev-list ^master "^$topic" ${publish} | sort`
++++only_next_2=`git rev-list ^master           ${publish} | sort`
++++if test "$only_next_1" = "$only_next_2"
++++then
++++	not_in_topic=`git rev-list "^$topic" master`
++++	if test -z "$not_in_topic"
++++	then
++++		echo >&2 "$topic is already up-to-date with master"
++++		exit 1 ;# we could allow it, but there is no point.
++++	else
++++		exit 0
++++	fi
++++else
++++	not_in_next=`git rev-list --pretty=oneline ^${publish} "$topic"`
++++	/usr/bin/perl -e '
++++		my $topic = $ARGV[0];
++++		my $msg = "* $topic has commits already merged to public branch:\n";
++++		my (%not_in_next) = map {
++++			/^([0-9a-f]+) /;
++++			($1 => 1);
++++		} split(/\n/, $ARGV[1]);
++++		for my $elem (map {
++++				/^([0-9a-f]+) (.*)$/;
++++				[$1 => $2];
++++			} split(/\n/, $ARGV[2])) {
++++			if (!exists $not_in_next{$elem->[0]}) {
++++				if ($msg) {
++++					print STDERR $msg;
++++					undef $msg;
++++				}
++++				print STDERR " $elem->[1]\n";
++++			}
++++		}
++++	' "$topic" "$not_in_next" "$not_in_master"
++++	exit 1
++++fi
++++
++++<<\DOC_END
++++
++++This sample hook safeguards topic branches that have been
++++published from being rewound.
++++
++++The workflow assumed here is:
++++
++++ * Once a topic branch forks from "master", "master" is never
++++   merged into it again (either directly or indirectly).
++++
++++ * Once a topic branch is fully cooked and merged into "master",
++++   it is deleted.  If you need to build on top of it to correct
++++   earlier mistakes, a new topic branch is created by forking at
++++   the tip of the "master".  This is not strictly necessary, but
++++   it makes it easier to keep your history simple.
++++
++++ * Whenever you need to test or publish your changes to topic
++++   branches, merge them into "next" branch.
++++
++++The script, being an example, hardcodes the publish branch name
++++to be "next", but it is trivial to make it configurable via
++++$GIT_DIR/config mechanism.
++++
++++With this workflow, you would want to know:
++++
++++(1) ... if a topic branch has ever been merged to "next".  Young
++++    topic branches can have stupid mistakes you would rather
++++    clean up before publishing, and things that have not been
++++    merged into other branches can be easily rebased without
++++    affecting other people.  But once it is published, you would
++++    not want to rewind it.
++++
++++(2) ... if a topic branch has been fully merged to "master".
++++    Then you can delete it.  More importantly, you should not
++++    build on top of it -- other people may already want to
++++    change things related to the topic as patches against your
++++    "master", so if you need further changes, it is better to
++++    fork the topic (perhaps with the same name) afresh from the
++++    tip of "master".
++++
++++Let's look at this example:
++++
++++		   o---o---o---o---o---o---o---o---o---o "next"
++++		  /       /           /           /
++++		 /   a---a---b A     /           /
++++		/   /               /           /
++++	       /   /   c---c---c---c B         /
++++	      /   /   /             \         /
++++	     /   /   /   b---b C     \       /
++++	    /   /   /   /             \     /
++++    ---o---o---o---o---o---o---o---o---o---o---o "master"
++++
++++
++++A, B and C are topic branches.
++++
++++ * A has one fix since it was merged up to "next".
++++
++++ * B has finished.  It has been fully merged up to "master" and "next",
++++   and is ready to be deleted.
++++
++++ * C has not merged to "next" at all.
++++
++++We would want to allow C to be rebased, refuse A, and encourage
++++B to be deleted.
++++
++++To compute (1):
++++
++++	git rev-list ^master ^topic next
++++	git rev-list ^master        next
++++
++++	if these match, topic has not merged in next at all.
++++
++++To compute (2):
++++
++++	git rev-list master..topic
++++
++++	if this is empty, it is fully merged to "master".
++++
++++DOC_END
+++diff -uarN WUDS_original/wuds/.git/hooks/update.sample code/.git/hooks/update.sample
+++--- WUDS_original/wuds/.git/hooks/update.sample	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/hooks/update.sample	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,128 @@
++++#!/bin/sh
++++#
++++# An example hook script to blocks unannotated tags from entering.
++++# Called by "git receive-pack" with arguments: refname sha1-old sha1-new
++++#
++++# To enable this hook, rename this file to "update".
++++#
++++# Config
++++# ------
++++# hooks.allowunannotated
++++#   This boolean sets whether unannotated tags will be allowed into the
++++#   repository.  By default they won't be.
++++# hooks.allowdeletetag
++++#   This boolean sets whether deleting tags will be allowed in the
++++#   repository.  By default they won't be.
++++# hooks.allowmodifytag
++++#   This boolean sets whether a tag may be modified after creation. By default
++++#   it won't be.
++++# hooks.allowdeletebranch
++++#   This boolean sets whether deleting branches will be allowed in the
++++#   repository.  By default they won't be.
++++# hooks.denycreatebranch
++++#   This boolean sets whether remotely creating branches will be denied
++++#   in the repository.  By default this is allowed.
++++#
++++
++++# --- Command line
++++refname="$1"
++++oldrev="$2"
++++newrev="$3"
++++
++++# --- Safety check
++++if [ -z "$GIT_DIR" ]; then
++++	echo "Don't run this script from the command line." >&2
++++	echo " (if you want, you could supply GIT_DIR then run" >&2
++++	echo "  $0 <ref> <oldrev> <newrev>)" >&2
++++	exit 1
++++fi
++++
++++if [ -z "$refname" -o -z "$oldrev" -o -z "$newrev" ]; then
++++	echo "usage: $0 <ref> <oldrev> <newrev>" >&2
++++	exit 1
++++fi
++++
++++# --- Config
++++allowunannotated=$(git config --bool hooks.allowunannotated)
++++allowdeletebranch=$(git config --bool hooks.allowdeletebranch)
++++denycreatebranch=$(git config --bool hooks.denycreatebranch)
++++allowdeletetag=$(git config --bool hooks.allowdeletetag)
++++allowmodifytag=$(git config --bool hooks.allowmodifytag)
++++
++++# check for no description
++++projectdesc=$(sed -e '1q' "$GIT_DIR/description")
++++case "$projectdesc" in
++++"Unnamed repository"* | "")
++++	echo "*** Project description file hasn't been set" >&2
++++	exit 1
++++	;;
++++esac
++++
++++# --- Check types
++++# if $newrev is 0000...0000, it's a commit to delete a ref.
++++zero="0000000000000000000000000000000000000000"
++++if [ "$newrev" = "$zero" ]; then
++++	newrev_type=delete
++++else
++++	newrev_type=$(git cat-file -t $newrev)
++++fi
++++
++++case "$refname","$newrev_type" in
++++	refs/tags/*,commit)
++++		# un-annotated tag
++++		short_refname=${refname##refs/tags/}
++++		if [ "$allowunannotated" != "true" ]; then
++++			echo "*** The un-annotated tag, $short_refname, is not allowed in this repository" >&2
++++			echo "*** Use 'git tag [ -a | -s ]' for tags you want to propagate." >&2
++++			exit 1
++++		fi
++++		;;
++++	refs/tags/*,delete)
++++		# delete tag
++++		if [ "$allowdeletetag" != "true" ]; then
++++			echo "*** Deleting a tag is not allowed in this repository" >&2
++++			exit 1
++++		fi
++++		;;
++++	refs/tags/*,tag)
++++		# annotated tag
++++		if [ "$allowmodifytag" != "true" ] && git rev-parse $refname > /dev/null 2>&1
++++		then
++++			echo "*** Tag '$refname' already exists." >&2
++++			echo "*** Modifying a tag is not allowed in this repository." >&2
++++			exit 1
++++		fi
++++		;;
++++	refs/heads/*,commit)
++++		# branch
++++		if [ "$oldrev" = "$zero" -a "$denycreatebranch" = "true" ]; then
++++			echo "*** Creating a branch is not allowed in this repository" >&2
++++			exit 1
++++		fi
++++		;;
++++	refs/heads/*,delete)
++++		# delete branch
++++		if [ "$allowdeletebranch" != "true" ]; then
++++			echo "*** Deleting a branch is not allowed in this repository" >&2
++++			exit 1
++++		fi
++++		;;
++++	refs/remotes/*,commit)
++++		# tracking branch
++++		;;
++++	refs/remotes/*,delete)
++++		# delete tracking branch
++++		if [ "$allowdeletebranch" != "true" ]; then
++++			echo "*** Deleting a tracking branch is not allowed in this repository" >&2
++++			exit 1
++++		fi
++++		;;
++++	*)
++++		# Anything else (is there anything else?)
++++		echo "*** Update hook: unknown type of update to ref $refname of type $newrev_type" >&2
++++		exit 1
++++		;;
++++esac
++++
++++# --- Finished
++++exit 0
+++diff -uarN WUDS_original/wuds/.git/info/exclude code/.git/info/exclude
+++--- WUDS_original/wuds/.git/info/exclude	1969-12-31 19:00:00.000000000 -0500
++++++ code/.git/info/exclude	2016-02-20 10:42:12.994040131 -0500
+++@@ -0,0 +1,6 @@
++++# git ls-files --others --exclude-from=.git/info/exclude
++++# Lines that start with '#' are comments.
++++# For a project mostly in C, the following would be a good set of
++++# exclude patterns (uncomment them if you want to use them):
++++# *.[oa]
++++# *~
+++diff -uarN WUDS_original/wuds/README code/README
+++--- WUDS_original/wuds/README	2016-02-20 10:42:21.998039970 -0500
++++++ code/README	2016-02-20 10:07:57.318076944 -0500
+++@@ -1,32 +1,64 @@
+++-# WUDS: Wi-Fi User Detection System
+++-
+++-WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
+++-
+++-## Setup
+++-
+++-```bash
+++-# install prerequisites
+++-# iw      - control the wi-fi interface
+++-# pycapy  - access full 802.11 frames
+++-# sqlite3 - interact with the database
+++-# screen  - (optional) daemonize WUDS
+++-sudo apt-get install iw python-pcapy sqlite3 screen
+++-# lauch a screen session
+++-screen
+++-# install WUDS
+++-git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/wuds.git
+++-cd wuds
+++-# edit the config file
+++-vim config.py
+++-# execute the included run script
+++-./run.sh
+++-# Ctrl+A, D detaches from the screen session
+++-```
+++-
+++-## File Summary
+++-
+++-* alerts.py - custom alert modules
+++-* config.py - configuration file
+++-* core.py - core library
+++-* run.sh - startup script
+++-* README - this file
+++\ No newline at end of file
++++#
++++# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests
++++
++++** THIS WILL CHANGE ALOT WORKING UP TO MARCH 12/13th !
++++
++++WUDS is the creation of Tim Tomes.  Any cool tricks are likely his, any sloppy
++++code is likely mine.  No ownership claimed, he's the man.
++++
++++WUDS project site: https://bitbucket.org/LaNMaSteR53/wuds/
++++
++++This is a slightly modified version of WUDS, mostly to add a few tiny things to
++++extend it to work w/ other tools in the "Breadcrumbs" repo.
++++
++++
++++## Changes
++++* run.sh - slight modifications, don't delete the interface at the end, use first wifi interface available if IFACE isn't configured in config.py
++++* core.py - add hostname to the records added to DB.  This is so the code can be used easily for multiple "sensors" that can eventually roll the data up to a centralized area -- all sensors have a unique hostname and are ntp sync'd, then the data is easy to mix up and sort out. 
++++
++++## File Summary
++++
++++* README - this file
++++* wudstobreadcrumbs.diff - a diff patch between the WUDS code and this version, if you'd rather use that.   This is auto-generated every time I push new code to the repo:  It pulls a copy of the WUDS code from Tim's site, creates the diff, and pushes it here.
++++*   
++++
++++
++++
++++
++++
++++
++++Original README Contents:
++++
++++###############################################################################
++++# WUDS: Wi-Fi User Detection System
++++
++++WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
++++
++++## Setup
++++
++++```bash
++++# install prerequisites
++++# iw      - control the wi-fi interface
++++# pycapy  - access full 802.11 frames
++++# sqlite3 - interact with the database
++++# screen  - (optional) daemonize WUDS
++++sudo apt-get install iw python-pcapy sqlite3 screen
++++# lauch a screen session
++++screen
++++# install WUDS
++++git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/wuds.git
++++cd wuds
++++# edit the config file
++++vim config.py
++++# execute the included run script
++++./run.sh
++++# Ctrl+A, D detaches from the screen session
++++```
++++
++++## File Summary
++++
++++* alerts.py - custom alert modules
++++* config.py - configuration file
++++* core.py - core library
++++* run.sh - startup script
++++* README - this file
 ++diff -uarN WUDS_original/wuds/run.sh code/run.sh
-++--- WUDS_original/wuds/run.sh	2016-02-20 09:31:09.386116484 -0500
-+++++ code/run.sh	2016-02-20 09:12:20.942136692 -0500
-++@@ -1,5 +1,5 @@
-++ iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
+++--- WUDS_original/wuds/run.sh	2016-02-20 10:42:21.998039970 -0500
++++++ code/run.sh	2016-02-20 10:03:55.706081271 -0500
+++@@ -1,6 +1,15 @@
+++-iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
 ++-sudo iw dev wlan0 interface add $iface type monitor
-+++sudo iw dev wlxc4e9841da5fa interface add $iface type monitor
-++ sudo ifconfig $iface up
+++-sudo ifconfig $iface up
++++#!/bin/bash
++++# run WUDS
++++#  -- uses first wireless interface if IFACE isn't set in config
++++
++++IFACE=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
++++
++++if [ "$IFACE" == "" ]; then 
++++	IFACE=`iwconfig 2>&1 | grep IEEE | cut -d" " -f 1`; 
++++	fi
++++
++++sudo iw dev $IFACE interface add $IFACE type monitor
++++sudo ifconfig $IFACE up
 ++ sudo python ./core.py
-++ sudo ifconfig $iface down
+++-sudo ifconfig $iface down
+++-sudo iw dev $iface del
++++sudo ifconfig $IFACE down
++++sudo iw dev $IFACE del
+++diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
+++--- WUDS_original/wuds/wudstobreadcrumbs.diff	1969-12-31 19:00:00.000000000 -0500
++++++ code/wudstobreadcrumbs.diff	2016-02-20 10:41:57.170040414 -0500
+++@@ -0,0 +1,278 @@
++++diff -uarN WUDS_original/wuds/config.py code/config.py
++++--- WUDS_original/wuds/config.py	2016-02-20 10:41:57.162040414 -0500
+++++++ code/config.py	2016-02-20 10:08:41.254076157 -0500
++++@@ -3,8 +3,9 @@
++++ # CONTROL
++++ #=========
++++ 
++++-# (STR) WLAN interface in monitor mode
++++-IFACE = 'mon0'
+++++# (STR) WLAN interface to use - run.sh puts into monitor mode.
+++++#       If this is blank, run.sh will use first wlan interface.
+++++IFACE = 'wlan1'
++++ 
++++ # (LIST) List of MAC addresses expected within the premises
++++ MAC_LIST = [
++++@@ -40,34 +41,34 @@
++++ LOG_LEVEL = 3
++++ 
++++ # (BOOL) Enable/Disable stdout debugging messages
++++-DEBUG = True
+++++DEBUG = False
++++ 
++++ #========
++++ # ALERTS
++++ #========
++++ 
++++ # (BOOL) Enable/Disable alert modules
++++-ALERT_SMS = True
++++-ALERT_PUSHOVER = True
+++++#ALERT_SMS = True
+++++#ALERT_PUSHOVER = True
++++ 
++++ #==================
++++ # ALERT_SMS CONFIG
++++ #==================
++++ 
++++ # (STR) SMTP server hostname and port (TLS required) for sending alerts
++++-SMTP_SERVER = 'smtp.gmail.com:587'
+++++#SMTP_SERVER = 'smtp.gmail.com:587'
++++ 
++++ # (STR) Mail server credentials for sending alerts
++++-SMTP_USERNAME = ''
++++-SMTP_PASSWORD = ''
+++++#SMTP_USERNAME = ''
+++++#SMTP_PASSWORD = ''
++++ 
++++ # (STR) SMS email address (through cellular service provider) for receiving alerts
++++-SMS_EMAIL = ''
+++++#SMS_EMAIL = ''
++++ 
++++ #=======================
++++ # ALERT_PUSHOVER CONFIG
++++ #=======================
++++ 
++++ # (STR) API and User keys from pushover.net
++++-PUSHOVER_API_KEY = ''
++++-PUSHOVER_USER_KEY = ''
+++++#PUSHOVER_API_KEY = ''
+++++#PUSHOVER_USER_KEY = ''
++++diff -uarN WUDS_original/wuds/core.py code/core.py
++++--- WUDS_original/wuds/core.py	2016-02-20 10:41:57.162040414 -0500
+++++++ code/core.py	2016-02-20 09:12:20.898136693 -0500
++++@@ -155,6 +155,7 @@
++++             except KeyboardInterrupt:
++++                 break
++++             except:
++++-                if DEBUG: print traceback.format_exec()
+++++#DES-feb1-2016--thiskeeps hanging on format_exec call?#                if DEBUG: print traceback.format_exec()
+++++		if DEBUG: print traceback.format_exec()
++++                 continue
++++         log_message(0, 'WUDS stopped.')
++++diff -uarN WUDS_original/wuds/README code/README
++++--- WUDS_original/wuds/README	2016-02-20 10:41:57.162040414 -0500
+++++++ code/README	2016-02-20 10:07:57.318076944 -0500
++++@@ -1,32 +1,64 @@
++++-# WUDS: Wi-Fi User Detection System
++++-
++++-WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
++++-
++++-## Setup
++++-
++++-```bash
++++-# install prerequisites
++++-# iw      - control the wi-fi interface
++++-# pycapy  - access full 802.11 frames
++++-# sqlite3 - interact with the database
++++-# screen  - (optional) daemonize WUDS
++++-sudo apt-get install iw python-pcapy sqlite3 screen
++++-# lauch a screen session
++++-screen
++++-# install WUDS
++++-git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/wuds.git
++++-cd wuds
++++-# edit the config file
++++-vim config.py
++++-# execute the included run script
++++-./run.sh
++++-# Ctrl+A, D detaches from the screen session
++++-```
++++-
++++-## File Summary
++++-
++++-* alerts.py - custom alert modules
++++-* config.py - configuration file
++++-* core.py - core library
++++-* run.sh - startup script
++++-* README - this file
++++\ No newline at end of file
+++++#
+++++# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests
+++++
+++++** THIS WILL CHANGE ALOT WORKING UP TO MARCH 12/13th !
+++++
+++++WUDS is the creation of Tim Tomes.  Any cool tricks are likely his, any sloppy
+++++code is likely mine.  No ownership claimed, he's the man.
+++++
+++++WUDS project site: https://bitbucket.org/LaNMaSteR53/wuds/
+++++
+++++This is a slightly modified version of WUDS, mostly to add a few tiny things to
+++++extend it to work w/ other tools in the "Breadcrumbs" repo.
+++++
+++++
+++++## Changes
+++++* run.sh - slight modifications, don't delete the interface at the end, use first wifi interface available if IFACE isn't configured in config.py
+++++* core.py - add hostname to the records added to DB.  This is so the code can be used easily for multiple "sensors" that can eventually roll the data up to a centralized area -- all sensors have a unique hostname and are ntp sync'd, then the data is easy to mix up and sort out. 
+++++
+++++## File Summary
+++++
+++++* README - this file
+++++* wudstobreadcrumbs.diff - a diff patch between the WUDS code and this version, if you'd rather use that.   This is auto-generated every time I push new code to the repo:  It pulls a copy of the WUDS code from Tim's site, creates the diff, and pushes it here.
+++++*   
+++++
+++++
+++++
+++++
+++++
+++++
+++++Original README Contents:
+++++
+++++###############################################################################
+++++# WUDS: Wi-Fi User Detection System
+++++
+++++WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
+++++
+++++## Setup
+++++
+++++```bash
+++++# install prerequisites
+++++# iw      - control the wi-fi interface
+++++# pycapy  - access full 802.11 frames
+++++# sqlite3 - interact with the database
+++++# screen  - (optional) daemonize WUDS
+++++sudo apt-get install iw python-pcapy sqlite3 screen
+++++# lauch a screen session
+++++screen
+++++# install WUDS
+++++git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/wuds.git
+++++cd wuds
+++++# edit the config file
+++++vim config.py
+++++# execute the included run script
+++++./run.sh
+++++# Ctrl+A, D detaches from the screen session
+++++```
+++++
+++++## File Summary
+++++
+++++* alerts.py - custom alert modules
+++++* config.py - configuration file
+++++* core.py - core library
+++++* run.sh - startup script
+++++* README - this file
++++diff -uarN WUDS_original/wuds/run.sh code/run.sh
++++--- WUDS_original/wuds/run.sh	2016-02-20 10:41:57.162040414 -0500
+++++++ code/run.sh	2016-02-20 10:03:55.706081271 -0500
++++@@ -1,6 +1,15 @@
++++-iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
++++-sudo iw dev wlan0 interface add $iface type monitor
++++-sudo ifconfig $iface up
+++++#!/bin/bash
+++++# run WUDS
+++++#  -- uses first wireless interface if IFACE isn't set in config
+++++
+++++IFACE=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
+++++
+++++if [ "$IFACE" == "" ]; then 
+++++	IFACE=`iwconfig 2>&1 | grep IEEE | cut -d" " -f 1`; 
+++++	fi
+++++
+++++sudo iw dev $IFACE interface add $IFACE type monitor
+++++sudo ifconfig $IFACE up
++++ sudo python ./core.py
++++-sudo ifconfig $iface down
++++-sudo iw dev $iface del
+++++sudo ifconfig $IFACE down
+++++sudo iw dev $IFACE del
++++diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
++++--- WUDS_original/wuds/wudstobreadcrumbs.diff	1969-12-31 19:00:00.000000000 -0500
+++++++ code/wudstobreadcrumbs.diff	2016-02-20 09:31:09.394116484 -0500
++++@@ -0,0 +1,78 @@
+++++diff -uarN WUDS_original/wuds/config.py code/config.py
+++++--- WUDS_original/wuds/config.py	2016-02-20 09:31:09.386116484 -0500
++++++++ code/config.py	2016-02-20 09:12:20.898136693 -0500
+++++@@ -4,7 +4,7 @@
+++++ #=========
+++++ 
+++++ # (STR) WLAN interface in monitor mode
+++++-IFACE = 'mon0'
++++++IFACE = 'mon1'
+++++ 
+++++ # (LIST) List of MAC addresses expected within the premises
+++++ MAC_LIST = [
+++++@@ -40,34 +40,34 @@
+++++ LOG_LEVEL = 3
+++++ 
+++++ # (BOOL) Enable/Disable stdout debugging messages
+++++-DEBUG = True
++++++DEBUG = False
+++++ 
+++++ #========
+++++ # ALERTS
+++++ #========
+++++ 
+++++ # (BOOL) Enable/Disable alert modules
+++++-ALERT_SMS = True
+++++-ALERT_PUSHOVER = True
++++++#ALERT_SMS = True
++++++#ALERT_PUSHOVER = True
+++++ 
+++++ #==================
+++++ # ALERT_SMS CONFIG
+++++ #==================
+++++ 
+++++ # (STR) SMTP server hostname and port (TLS required) for sending alerts
+++++-SMTP_SERVER = 'smtp.gmail.com:587'
++++++#SMTP_SERVER = 'smtp.gmail.com:587'
+++++ 
+++++ # (STR) Mail server credentials for sending alerts
+++++-SMTP_USERNAME = ''
+++++-SMTP_PASSWORD = ''
++++++#SMTP_USERNAME = ''
++++++#SMTP_PASSWORD = ''
+++++ 
+++++ # (STR) SMS email address (through cellular service provider) for receiving alerts
+++++-SMS_EMAIL = ''
++++++#SMS_EMAIL = ''
+++++ 
+++++ #=======================
+++++ # ALERT_PUSHOVER CONFIG
+++++ #=======================
+++++ 
+++++ # (STR) API and User keys from pushover.net
+++++-PUSHOVER_API_KEY = ''
+++++-PUSHOVER_USER_KEY = ''
++++++#PUSHOVER_API_KEY = ''
++++++#PUSHOVER_USER_KEY = ''
+++++diff -uarN WUDS_original/wuds/core.py code/core.py
+++++--- WUDS_original/wuds/core.py	2016-02-20 09:31:09.386116484 -0500
++++++++ code/core.py	2016-02-20 09:12:20.898136693 -0500
+++++@@ -155,6 +155,7 @@
+++++             except KeyboardInterrupt:
+++++                 break
+++++             except:
+++++-                if DEBUG: print traceback.format_exec()
++++++#DES-feb1-2016--thiskeeps hanging on format_exec call?#                if DEBUG: print traceback.format_exec()
++++++		if DEBUG: print traceback.format_exec()
+++++                 continue
+++++         log_message(0, 'WUDS stopped.')
+++++diff -uarN WUDS_original/wuds/run.sh code/run.sh
+++++--- WUDS_original/wuds/run.sh	2016-02-20 09:31:09.386116484 -0500
++++++++ code/run.sh	2016-02-20 09:12:20.942136692 -0500
+++++@@ -1,5 +1,5 @@
+++++ iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
+++++-sudo iw dev wlan0 interface add $iface type monitor
++++++sudo iw dev wlxc4e9841da5fa interface add $iface type monitor
+++++ sudo ifconfig $iface up
+++++ sudo python ./core.py
+++++ sudo ifconfig $iface down
