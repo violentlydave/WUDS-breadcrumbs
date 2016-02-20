@@ -1,0 +1,278 @@
+diff -uarN WUDS_original/wuds/config.py code/config.py
+--- WUDS_original/wuds/config.py	2016-02-20 10:41:57.162040414 -0500
++++ code/config.py	2016-02-20 10:08:41.254076157 -0500
+@@ -3,8 +3,9 @@
+ # CONTROL
+ #=========
+ 
+-# (STR) WLAN interface in monitor mode
+-IFACE = 'mon0'
++# (STR) WLAN interface to use - run.sh puts into monitor mode.
++#       If this is blank, run.sh will use first wlan interface.
++IFACE = 'wlan1'
+ 
+ # (LIST) List of MAC addresses expected within the premises
+ MAC_LIST = [
+@@ -40,34 +41,34 @@
+ LOG_LEVEL = 3
+ 
+ # (BOOL) Enable/Disable stdout debugging messages
+-DEBUG = True
++DEBUG = False
+ 
+ #========
+ # ALERTS
+ #========
+ 
+ # (BOOL) Enable/Disable alert modules
+-ALERT_SMS = True
+-ALERT_PUSHOVER = True
++#ALERT_SMS = True
++#ALERT_PUSHOVER = True
+ 
+ #==================
+ # ALERT_SMS CONFIG
+ #==================
+ 
+ # (STR) SMTP server hostname and port (TLS required) for sending alerts
+-SMTP_SERVER = 'smtp.gmail.com:587'
++#SMTP_SERVER = 'smtp.gmail.com:587'
+ 
+ # (STR) Mail server credentials for sending alerts
+-SMTP_USERNAME = ''
+-SMTP_PASSWORD = ''
++#SMTP_USERNAME = ''
++#SMTP_PASSWORD = ''
+ 
+ # (STR) SMS email address (through cellular service provider) for receiving alerts
+-SMS_EMAIL = ''
++#SMS_EMAIL = ''
+ 
+ #=======================
+ # ALERT_PUSHOVER CONFIG
+ #=======================
+ 
+ # (STR) API and User keys from pushover.net
+-PUSHOVER_API_KEY = ''
+-PUSHOVER_USER_KEY = ''
++#PUSHOVER_API_KEY = ''
++#PUSHOVER_USER_KEY = ''
+diff -uarN WUDS_original/wuds/core.py code/core.py
+--- WUDS_original/wuds/core.py	2016-02-20 10:41:57.162040414 -0500
++++ code/core.py	2016-02-20 09:12:20.898136693 -0500
+@@ -155,6 +155,7 @@
+             except KeyboardInterrupt:
+                 break
+             except:
+-                if DEBUG: print traceback.format_exec()
++#DES-feb1-2016--thiskeeps hanging on format_exec call?#                if DEBUG: print traceback.format_exec()
++		if DEBUG: print traceback.format_exec()
+                 continue
+         log_message(0, 'WUDS stopped.')
+diff -uarN WUDS_original/wuds/README code/README
+--- WUDS_original/wuds/README	2016-02-20 10:41:57.162040414 -0500
++++ code/README	2016-02-20 10:07:57.318076944 -0500
+@@ -1,32 +1,64 @@
+-# WUDS: Wi-Fi User Detection System
+-
+-WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
+-
+-## Setup
+-
+-```bash
+-# install prerequisites
+-# iw      - control the wi-fi interface
+-# pycapy  - access full 802.11 frames
+-# sqlite3 - interact with the database
+-# screen  - (optional) daemonize WUDS
+-sudo apt-get install iw python-pcapy sqlite3 screen
+-# lauch a screen session
+-screen
+-# install WUDS
+-git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/wuds.git
+-cd wuds
+-# edit the config file
+-vim config.py
+-# execute the included run script
+-./run.sh
+-# Ctrl+A, D detaches from the screen session
+-```
+-
+-## File Summary
+-
+-* alerts.py - custom alert modules
+-* config.py - configuration file
+-* core.py - core library
+-* run.sh - startup script
+-* README - this file
+\ No newline at end of file
++#
++# WUDS: Wi-Fi User Detection - Modified for "Breadcrumbs" talk/tools/tests
++
++** THIS WILL CHANGE ALOT WORKING UP TO MARCH 12/13th !
++
++WUDS is the creation of Tim Tomes.  Any cool tricks are likely his, any sloppy
++code is likely mine.  No ownership claimed, he's the man.
++
++WUDS project site: https://bitbucket.org/LaNMaSteR53/wuds/
++
++This is a slightly modified version of WUDS, mostly to add a few tiny things to
++extend it to work w/ other tools in the "Breadcrumbs" repo.
++
++
++## Changes
++* run.sh - slight modifications, don't delete the interface at the end, use first wifi interface available if IFACE isn't configured in config.py
++* core.py - add hostname to the records added to DB.  This is so the code can be used easily for multiple "sensors" that can eventually roll the data up to a centralized area -- all sensors have a unique hostname and are ntp sync'd, then the data is easy to mix up and sort out. 
++
++## File Summary
++
++* README - this file
++* wudstobreadcrumbs.diff - a diff patch between the WUDS code and this version, if you'd rather use that.   This is auto-generated every time I push new code to the repo:  It pulls a copy of the WUDS code from Tim's site, creates the diff, and pushes it here.
++*   
++
++
++
++
++
++
++Original README Contents:
++
++###############################################################################
++# WUDS: Wi-Fi User Detection System
++
++WUDS is a proximity detection system that uses Wi-Fi probe requests, signal strength, and a white list of MAC addresses to create a detection barrier and identify the presence of foreign devices within a protected zone. Designed with the Raspberry Pi in mind, WUDS can be installed and configured on any system with Python 2.x and a wireless card capable of Monitor mode. See [http://www.lanmaster53.com/2014/10/wifi-user-detection-system/](http://www.lanmaster53.com/2014/10/wifi-user-detection-system/) for more information.
++
++## Setup
++
++```bash
++# install prerequisites
++# iw      - control the wi-fi interface
++# pycapy  - access full 802.11 frames
++# sqlite3 - interact with the database
++# screen  - (optional) daemonize WUDS
++sudo apt-get install iw python-pcapy sqlite3 screen
++# lauch a screen session
++screen
++# install WUDS
++git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/wuds.git
++cd wuds
++# edit the config file
++vim config.py
++# execute the included run script
++./run.sh
++# Ctrl+A, D detaches from the screen session
++```
++
++## File Summary
++
++* alerts.py - custom alert modules
++* config.py - configuration file
++* core.py - core library
++* run.sh - startup script
++* README - this file
+diff -uarN WUDS_original/wuds/run.sh code/run.sh
+--- WUDS_original/wuds/run.sh	2016-02-20 10:41:57.162040414 -0500
++++ code/run.sh	2016-02-20 10:03:55.706081271 -0500
+@@ -1,6 +1,15 @@
+-iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
+-sudo iw dev wlan0 interface add $iface type monitor
+-sudo ifconfig $iface up
++#!/bin/bash
++# run WUDS
++#  -- uses first wireless interface if IFACE isn't set in config
++
++IFACE=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
++
++if [ "$IFACE" == "" ]; then 
++	IFACE=`iwconfig 2>&1 | grep IEEE | cut -d" " -f 1`; 
++	fi
++
++sudo iw dev $IFACE interface add $IFACE type monitor
++sudo ifconfig $IFACE up
+ sudo python ./core.py
+-sudo ifconfig $iface down
+-sudo iw dev $iface del
++sudo ifconfig $IFACE down
++sudo iw dev $IFACE del
+diff -uarN WUDS_original/wuds/wudstobreadcrumbs.diff code/wudstobreadcrumbs.diff
+--- WUDS_original/wuds/wudstobreadcrumbs.diff	1969-12-31 19:00:00.000000000 -0500
++++ code/wudstobreadcrumbs.diff	2016-02-20 09:31:09.394116484 -0500
+@@ -0,0 +1,78 @@
++diff -uarN WUDS_original/wuds/config.py code/config.py
++--- WUDS_original/wuds/config.py	2016-02-20 09:31:09.386116484 -0500
+++++ code/config.py	2016-02-20 09:12:20.898136693 -0500
++@@ -4,7 +4,7 @@
++ #=========
++ 
++ # (STR) WLAN interface in monitor mode
++-IFACE = 'mon0'
+++IFACE = 'mon1'
++ 
++ # (LIST) List of MAC addresses expected within the premises
++ MAC_LIST = [
++@@ -40,34 +40,34 @@
++ LOG_LEVEL = 3
++ 
++ # (BOOL) Enable/Disable stdout debugging messages
++-DEBUG = True
+++DEBUG = False
++ 
++ #========
++ # ALERTS
++ #========
++ 
++ # (BOOL) Enable/Disable alert modules
++-ALERT_SMS = True
++-ALERT_PUSHOVER = True
+++#ALERT_SMS = True
+++#ALERT_PUSHOVER = True
++ 
++ #==================
++ # ALERT_SMS CONFIG
++ #==================
++ 
++ # (STR) SMTP server hostname and port (TLS required) for sending alerts
++-SMTP_SERVER = 'smtp.gmail.com:587'
+++#SMTP_SERVER = 'smtp.gmail.com:587'
++ 
++ # (STR) Mail server credentials for sending alerts
++-SMTP_USERNAME = ''
++-SMTP_PASSWORD = ''
+++#SMTP_USERNAME = ''
+++#SMTP_PASSWORD = ''
++ 
++ # (STR) SMS email address (through cellular service provider) for receiving alerts
++-SMS_EMAIL = ''
+++#SMS_EMAIL = ''
++ 
++ #=======================
++ # ALERT_PUSHOVER CONFIG
++ #=======================
++ 
++ # (STR) API and User keys from pushover.net
++-PUSHOVER_API_KEY = ''
++-PUSHOVER_USER_KEY = ''
+++#PUSHOVER_API_KEY = ''
+++#PUSHOVER_USER_KEY = ''
++diff -uarN WUDS_original/wuds/core.py code/core.py
++--- WUDS_original/wuds/core.py	2016-02-20 09:31:09.386116484 -0500
+++++ code/core.py	2016-02-20 09:12:20.898136693 -0500
++@@ -155,6 +155,7 @@
++             except KeyboardInterrupt:
++                 break
++             except:
++-                if DEBUG: print traceback.format_exec()
+++#DES-feb1-2016--thiskeeps hanging on format_exec call?#                if DEBUG: print traceback.format_exec()
+++		if DEBUG: print traceback.format_exec()
++                 continue
++         log_message(0, 'WUDS stopped.')
++diff -uarN WUDS_original/wuds/run.sh code/run.sh
++--- WUDS_original/wuds/run.sh	2016-02-20 09:31:09.386116484 -0500
+++++ code/run.sh	2016-02-20 09:12:20.942136692 -0500
++@@ -1,5 +1,5 @@
++ iface=`grep IFACE config.py | cut -d'=' -f 2 | sed "s/['\" ]//g"`
++-sudo iw dev wlan0 interface add $iface type monitor
+++sudo iw dev wlxc4e9841da5fa interface add $iface type monitor
++ sudo ifconfig $iface up
++ sudo python ./core.py
++ sudo ifconfig $iface down
